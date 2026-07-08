@@ -81,7 +81,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = Course.objects.select_related('instructor').prefetch_related(
-            'ratings', 'enrollments'
+            'modules__lessons', 'ratings', 'enrollments'
         )
         if self.action == 'list':
             qs = qs.filter(is_published=True)

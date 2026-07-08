@@ -1,5 +1,5 @@
 from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from . import views
@@ -9,11 +9,12 @@ router.register(r'courses', views.CourseViewSet, basename='course')
 router.register(r'enrollments', views.EnrollmentViewSet, basename='enrollment')
 router.register(r'grades', views.GradeViewSet, basename='grade')
 
-# Nested: /api/courses/{course_pk}/modules/{pk}/lessons/
-course_router = DefaultRouter()
+# Use SimpleRouter for nested routers — DefaultRouter adds an API root at the
+# base path (e.g. /courses/{pk}/) which would shadow CourseViewSet.retrieve.
+course_router = SimpleRouter()
 course_router.register(r'modules', views.ModuleViewSet, basename='module')
 
-module_router = DefaultRouter()
+module_router = SimpleRouter()
 module_router.register(r'lessons', views.LessonViewSet, basename='lesson')
 
 urlpatterns = [
