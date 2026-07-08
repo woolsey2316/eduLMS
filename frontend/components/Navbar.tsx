@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import Logo from '@/components/Logo';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -14,10 +15,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-indigo-700 text-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold tracking-tight hover:text-indigo-200">
-          eduLMS
+    <nav className="bg-white text-black shadow-md">
+      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+        <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
+          <Logo dark={true} />
         </Link>
 
         <div className="flex items-center gap-6 text-sm font-medium">
