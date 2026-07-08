@@ -75,7 +75,7 @@ export default function CourseDetailPage() {
         <div className="flex flex-wrap gap-4 mt-4 text-sm text-indigo-200">
           <span>🎓 {course.enrollment_count} students</span>
           <span>📖 {lessonCount} lessons</span>
-          <span>⏱ {Math.round(totalMinutes / 60)}h {totalMinutes % 60}m total</span>
+          <span>⏱ {Math.floor(totalMinutes / 60)}h {totalMinutes % 60}m total</span>
           {course.average_rating && <span>⭐ {course.average_rating.toFixed(1)}</span>}
         </div>
       </div>
