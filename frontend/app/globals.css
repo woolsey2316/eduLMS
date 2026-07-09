@@ -3,6 +3,12 @@
 @theme {
   --font-spartan: var(--font-league-spartan), sans-serif;
   --font-poppins: var(--font-poppins);
+  --animate-side-to-side: side-to-side 3.5s linear infinite alternate;
+
+  @keyframes side-to-side {
+    0% { transform: translateX(-50px); }
+    100% { transform: translateX(50px); }
+  }
 }
 
 :root {
