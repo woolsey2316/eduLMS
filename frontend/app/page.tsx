@@ -54,17 +54,33 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-indigo-700 text-white py-20 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Learn Without Limits</h1>
-        <p className="text-indigo-200 text-lg mb-8 max-w-xl mx-auto">
-          Discover expert-led courses, earn certificates, and advance your career.
-        </p>
-        <Link
-          href="/courses"
-          className="inline-block bg-white text-indigo-700 font-semibold px-8 py-3 rounded-full hover:bg-indigo-100 transition"
-        >
-          Browse All Courses
-        </Link>
+      <section className="min-h-[660px] bg-[#eaf0f2] flex flex-col justify-end text-white px-4 text-center relative before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-[url('/BG-1.webp')] before:bg-cover before:bg-center">
+        <div className="max-w-7xl mx-auto flex items-center justify-center z-10">
+          <div className="flex flex-col items-start justify-center w-1/2">
+            <h1 className="text-[#181818] text-5xl md:text-6xl font-extrabold mb-4 text-left">Get <span className="text-[#ee4a62]">2500+</span><br/>
+            Best Online Courses From EduLMS</h1>
+            <p className="text-[#181818] text-lg mb-8 max-w-xl text-left">
+              Discover expert-led courses, earn certificates, and advance your career.
+            </p>
+            <Link
+              href="/courses"
+              className="group inline-flex items-center gap-3 bg-[#1ab69d] text-white font-medium px-8 py-3 rounded-[5px] relative overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center gap-3">
+                Find Courses
+                {/* Arrow Right */}
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </span>
+              {/* Gradient slide-in overlay */}
+              <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
+            </Link>
+          </div>   
+          <div className="px-1">
+            <img src="/girl-1.webp" alt="Hero Image" className="xl:w-[400px] xl:h-[450px] 2xl:w-[538px] 2xl:h-[605px] object-cover" />
+          </div>
+        </div>
       </section>
 
       {/* Course grid */}
