@@ -2,7 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from .models import Cart, CartItem, Course, Enrollment, Grade, Lesson, Module, Rating, User
+from .models import BlogPost, Cart, CartItem, Comment, Course, Enrollment, Grade, Lesson, Module, Rating, User
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -132,3 +132,45 @@ class CartSerializer(serializers.ModelSerializer):
         model = Cart
         fields = ('id', 'student', 'items', 'total', 'created_at')
         read_only_fields = ('id', 'student', 'created_at')
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author_username = serializers.CharField(source='author.username', read_only=True)
+    author_avatar = serializers.URLField(source='author.avatar_url', read_only=True)
+    author_full_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'post', 'author', 'author_username', 'author_full_name',
+                  'author_avatar', 'body', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'author', 'post', 'created_at', 'updated_at')
+
+    def get_author_full_name(self, obj):
+        return obj.author.get_full_name() or obj.author.username
+
+
+class BlogPostListSerializer(serializers.ModelSerializer):
+    author_username = serializers.CharField(source='author.username', read_only=True)
+    author_full_name = serializers.SerializerMethodField()
+    author_avatar = serializers.URLField(source='author.avatar_url', read_only=True)
+    comment_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = BlogPost
+        fields = (
+            'id', 'title', 'slug', 'excerpt', 'thumbnail_url', 'category',
+            'tags', 'is_published', 'read_time_minutes', 'comment_count',
+            'author', 'author_username', 'author_full_name', 'author_avatar',
+            'created_at', 'updated_at',
+        )
+        read_only_fields = ('id', 'slug', 'author', 'created_at', 'updated_at')
+
+    def get_author_full_name(self, obj):
+        return obj.author.get_full_name() or obj.author.username
+
+
+class BlogPostDetailSerializer(BlogPostListSerializer):
+    comments = CommentSerializer(many=True, read_only=True)
+
+    class Meta(BlogPostListSerializer.Meta):
+        fields = BlogPostListSerializer.Meta.fields + ('body', 'comments')

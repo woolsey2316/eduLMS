@@ -4,9 +4,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .models import Cart, CartItem, Course, Enrollment, Grade, Lesson, Module, Rating, User
+from .models import BlogPost, Cart, CartItem, Comment, Course, Enrollment, Grade, Lesson, Module, Rating, User
 from .serializers import (
+    BlogPostDetailSerializer,
+    BlogPostListSerializer,
     CartSerializer,
+    CommentSerializer,
     CourseDetailSerializer,
     CourseListSerializer,
     CustomTokenSerializer,
@@ -306,3 +309,77 @@ class CartCheckoutView(generics.GenericAPIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+# ──────────────────────────────────────────
+# Blog
+# ──────────────────────────────────────────
+
+class IsAuthorOrReadOnly(permissions.BasePermission):
+    """Allow authors (and admins) to edit their own posts/comments."""
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.author == request.user or request.user.is_staff
+
+
+class BlogPostViewSet(viewsets.ModelViewSet):
+    """
+    list/retrieve — public (published posts only)
+    create        — authenticated instructors or staff
+    update/delete — author or staff only
+    """
+
+    def get_queryset(self):
+        qs = BlogPost.objects.select_related('author').prefetch_related('comments')
+        if self.action == 'list':
+            qs = qs.filter(is_published=True)
+        return qs
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return BlogPostDetailSerializer
+        return BlogPostListSerializer
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [permissions.IsAuthenticated()]
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return [permissions.IsAuthenticated(), IsAuthorOrReadOnly()]
+        return [permissions.AllowAny()]
+
+    def perform_create(self, serializer):
+        from django.utils.text import slugify
+        import uuid
+        title = serializer.validated_data.get('title', '')
+        base_slug = slugify(title)
+        slug = base_slug
+        if BlogPost.objects.filter(slug=slug).exists():
+            slug = f'{base_slug}-{uuid.uuid4().hex[:6]}'
+        serializer.save(author=self.request.user, slug=slug)
+
+
+class CommentListCreateView(generics.ListCreateAPIView):
+    serializer_class = CommentSerializer
+
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    def get_queryset(self):
+        return Comment.objects.filter(
+            post_id=self.kwargs['post_pk']
+        ).select_related('author')
+
+    def perform_create(self, serializer):
+        post = BlogPost.objects.get(pk=self.kwargs['post_pk'], is_published=True)
+        serializer.save(author=self.request.user, post=post)
+
+
+class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+
+    def get_queryset(self):
+        return Comment.objects.filter(post_id=self.kwargs['post_pk'])

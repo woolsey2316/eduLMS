@@ -8,6 +8,7 @@ router = DefaultRouter()
 router.register(r'courses', views.CourseViewSet, basename='course')
 router.register(r'enrollments', views.EnrollmentViewSet, basename='enrollment')
 router.register(r'grades', views.GradeViewSet, basename='grade')
+router.register(r'blog', views.BlogPostViewSet, basename='blog')
 
 # Use SimpleRouter for nested routers — DefaultRouter adds an API root at the
 # base path (e.g. /courses/{pk}/) which would shadow CourseViewSet.retrieve.
@@ -31,6 +32,10 @@ urlpatterns = [
     path('cart/add/', views.CartAddView.as_view(), name='cart-add'),
     path('cart/remove/<int:course_id>/', views.CartRemoveView.as_view(), name='cart-remove'),
     path('cart/checkout/', views.CartCheckoutView.as_view(), name='cart-checkout'),
+
+    # Blog comments (nested under blog posts)
+    path('blog/<int:post_pk>/comments/', views.CommentListCreateView.as_view(), name='post-comments'),
+    path('blog/<int:post_pk>/comments/<int:pk>/', views.CommentDetailView.as_view(), name='post-comment-detail'),
 
     # Nested module/lesson routes
     path('courses/<int:course_pk>/', include(course_router.urls)),

@@ -94,3 +94,36 @@ export interface Cart {
   total: string;
   created_at: string;
 }
+
+export interface Comment {
+  id: number;
+  post: number;
+  author: number;
+  author_username: string;
+  author_full_name: string;
+  author_avatar: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  body: string;
+  thumbnail_url: string;
+  category: string;
+  tags: string;
+  is_published: boolean;
+  read_time_minutes: number;
+  comment_count: number;
+  author: number;
+  author_username: string;
+  author_full_name: string;
+  author_avatar: string;
+  created_at: string;
+  updated_at: string;
+  comments?: Comment[];
+}

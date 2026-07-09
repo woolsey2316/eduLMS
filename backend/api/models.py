@@ -142,3 +142,44 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f'{self.cart.student.username} — {self.course.title}'
+
+
+# ── Blog ──────────────────────────────────────────────────────────────
+
+class BlogPost(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
+    title = models.CharField(max_length=300)
+    slug = models.SlugField(max_length=320, unique=True)
+    excerpt = models.TextField(help_text='Short summary shown on listing cards')
+    body = models.TextField()
+    thumbnail_url = models.URLField(blank=True)
+    category = models.CharField(max_length=100, blank=True)
+    tags = models.CharField(max_length=300, blank=True, help_text='Comma-separated tags')
+    is_published = models.BooleanField(default=False)
+    read_time_minutes = models.PositiveSmallIntegerField(default=5)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def comment_count(self):
+        return self.comments.count()
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_comments')
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f'{self.author.username} on "{self.post.title}"'
