@@ -72,6 +72,13 @@ class MeView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+class UserCountView(generics.GenericAPIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        return Response({'count': User.objects.count()})
+
+
 # ──────────────────────────────────────────
 # Courses
 # ──────────────────────────────────────────
