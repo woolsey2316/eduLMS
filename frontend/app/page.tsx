@@ -123,6 +123,7 @@ export default function HomePage() {
     ]).then(([coursesResponse, usersResponse]) => {
       setCourses(coursesResponse.data.results ?? coursesResponse.data);
       setNumberOfMembers(usersResponse.data.count);
+      setLoading(false)
     }).catch(() => setLoading(false));
   }, []);
 
@@ -134,17 +135,19 @@ export default function HomePage() {
         ref={heroRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="min-h-[660px] bg-[#eaf0f2] flex flex-col justify-end text-white px-4 text-center relative before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-[url('/BG-1.webp')] before:bg-cover before:bg-center"
+        className="lg:min-h-[500px] xl:min-h-[600px] 2xl:min-h-[660px] bg-[#eaf0f2] flex flex-col justify-end text-white text-center relative before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-[url('/BG-1.webp')] before:bg-cover before:bg-center"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-center z-10">
-          <li className="text-white text-sm absolute top-30 left-65 w-50 h-50 z-[-1]"
-              style={{ transform: parallax(-18, -12), transition: 'transform 0.12s ease-out' }}>
-            <img src="/shape-13.png" alt="dots" className="w-50 h-50" />
-          </li>
-          <div className="flex flex-col items-start justify-center w-1/2">
-            <h1 className="text-[#181818] text-5xl md:text-6xl font-extrabold mb-4 text-left">Get <span className="text-[#ee4a62]">2500+</span><br/>
-            Best Online Courses From EduLMS</h1>
-            <p className="text-[#181818] text-lg mb-8 max-w-xl text-left">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center z-10">
+          <div className="flex flex-col items-center mt-[75px] lg:mt-0 lg:items-start justify-center w-3/4 lg:w-1/2 relative mb-[50px]">
+            <li className="text-white text-sm absolute top-[-15%] left-[-10%] w-50 h-50 z-[-1]"
+                style={{ transform: parallax(-18, -12), transition: 'transform 0.12s ease-out' }}>
+              <img src="/shape-13.png" alt="dots" className="w-50 h-50" />
+            </li>
+            <h1 className="text-[#181818] text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-extrabold mb-4 text-center lg:text-left">
+              Get <span className="text-[#ee4a62] mr-2">2500+</span>
+              Best Online Courses From EduLMS
+            </h1>
+            <p className="text-[#181818] text-lg mb-8 max-w-xl text-center lg:text-left">
               Discover expert-led courses, earn certificates, and advance your career.
             </p>
             <Link
@@ -162,51 +165,67 @@ export default function HomePage() {
               <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
             </Link>
           </div>   
-          <div className="px-1">
-            <img src="/girl-1.webp" alt="Hero Image" className="xl:w-[400px] xl:h-[450px] 2xl:w-[538px] 2xl:h-[605px] object-cover" />
+          <div className="px-1 relative">
+            <img src="/girl-1.webp" alt="Hero Image" className="w-[300px] h-[338px] md:w-[400px] md:h-[450px] lg:w-[350px] lg:h-[394px] xl:w-[400px] xl:h-[450px] 2xl:w-[538px] 2xl:h-[605px] object-cover" />
+            {/* Background shapes */}
+            <ul className="flex items-center justify-center gap-4 absolute top-0 w-full h-full">
+              <li className="text-white text-sm absolute top-90 right-[-14%] w-50 h-50 z-[-1]"
+                  style={{ transform: parallax(14, 10), transition: 'transform 0.12s ease-out' }}>
+                <img src="/shape-13.png" alt="dots" className="w-50 h-50" />
+              </li>
+              <li 
+                className="text-white text-sm absolute top-[60%] left-[0%] w-50 h-50 z-[-1]"
+                style={{ transform: parallax(18, 12), transition: 'transform 0.12s ease-out' }}>
+                <span 
+                  className="bg-[#f8b81f] w-[41] h-[41] rounded-full" 
+                  style={{ 
+                    transform: 'translate3d(-12.3px, 3.8px, 0px)',
+                    transformStyle: 'preserve-3d',
+                    backfaceVisibility: 'hidden',
+                    position: 'relative',
+                    display: 'block',
+                    left: '0px',
+                    top: '0px' 
+                  }}></span>
+              </li>
+              <li className="text-white text-sm absolute top-[20%] left-[5%] w-50 h-50 z-[-1]"
+                  style={{ transform: parallax(-20, -27), transition: 'transform 0.12s ease-out' }}>
+                <img src="/shape-16.png" alt="dots" className="w-50 h-50" />
+              </li>
+              <li className="text-white text-sm absolute top-[21%] left-[64%] w-40 h-40 z-10">
+                <img src="/shape-02.png" alt="dots" className="w-40 h-40" />
+              </li>
+              <li className="animate-side-to-side text-white text-sm absolute top-[10%] left-0 w-24 h-10 z-[-1]">
+                <img src="/shape-15.png" alt="dots" className="w-24 h-10" />
+              </li>
+              <li className="text-white text-sm absolute bottom-[20%] right-[-20%] w-20 h-20 z-[-1]"
+                  style={{ transform: parallax(-22, -16), transition: 'transform 0.12s ease-out' }}>
+                <img src="/shape-18.png" alt="dots" className="w-20 h-20" />
+              </li>
+            </ul>
           </div>
-          <ul className="flex items-center justify-center gap-4 absolute top-0 right-0">
-            <li className="text-white text-sm top-90 absolute right-80 w-50 h-50 z-[-1]"
-                style={{ transform: parallax(14, 10), transition: 'transform 0.12s ease-out' }}>
-              <img src="/shape-13.png" alt="dots" className="w-50 h-50" />
-            </li>
-            <li className="text-white text-sm absolute top-30 right-160 w-50 h-50 z-[-1]"
-                style={{ transform: parallax(-18, -12), transition: 'transform 0.12s ease-out' }}>
-              <img src="/shape-16.png" alt="dots" className="w-50 h-50" />
-            </li>
-            <li className="text-white text-sm absolute top-20 right-0 w-12 h-30 z-[-1]">
-              <img src="/shape-01.png" alt="dots" className="w-12 h-30" />
-            </li>
-            <li className="text-white text-sm absolute top-40 right-100 w-40 h-40 z-10">
-              <img src="/shape-02.png" alt="dots" className="w-40 h-40" />
-            </li>
-            <li className="animate-side-to-side text-white text-sm absolute top-20 right-200 w-24 h-12 z-[-1]">
-              <img src="/shape-15.png" alt="dots" className="w-24 h-12" />
-            </li>
-            <li className="text-white text-sm absolute top-100 right-70 w-20 h-20 z-[-1]"
-                style={{ transform: parallax(-22, -16), transition: 'transform 0.12s ease-out' }}>
-              <img src="/shape-18.png" alt="dots" className="w-20 h-20" />
-            </li>
-          </ul>
         </div>
+        <li className="text-white text-sm absolute top-20 right-0 w-12 h-30 z-0">
+          <img src="/shape-01.png" alt="dots" className="w-12 h-30" />
+        </li>
       </section>
       
       {/* Banner */}
       <section className="bg-[linear-gradient(-90deg,#31b978,#1ab69d)] flex items-center justify-center">
         <div className="max-w-7xl mx-auto flex items-center justify-center font-spartan text-2xl">
-          <div className="flex items-center justify-center gap-4 py-12 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
+          <div className="flex items-center justify-center gap-4 py-10 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
             <div className="w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><LaptopIcon /></div>
             <p className="text-white">{numberOfCourses} Online Courses</p>
           </div>
-          <div className="flex items-center justify-center gap-4 py-12 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
+          <div className="flex items-center justify-center gap-4 py-10 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
             <div className="w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><InstructorIcon /></div>
             <p className="text-white">Top Instructors</p>
           </div>  
-          <div className="flex items-center justify-center gap-4 py-12 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
+          <div className="flex items-center justify-center gap-4 py-10 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
             <div className="w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><CertificateIcon /></div>
             <p className="text-white">Online Certifications</p>
           </div>
-          <div className="flex items-center justify-center gap-4 py-12 px-6">
+          <div className="flex items-center justify-center gap-4 py-10 px-6">
             <div className="w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><GroupIcon /></div>
             <p className="text-white">{numberOfMembers} Members</p>
           </div>
