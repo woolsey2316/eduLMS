@@ -58,13 +58,14 @@ class CourseListSerializer(serializers.ModelSerializer):
     instructor_name = serializers.SerializerMethodField()
     average_rating = serializers.FloatField(read_only=True)
     enrollment_count = serializers.IntegerField(read_only=True)
+    lesson_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Course
         fields = (
             'id', 'title', 'description', 'price', 'thumbnail_url',
             'category', 'is_published', 'instructor', 'instructor_name',
-            'average_rating', 'enrollment_count', 'created_at',
+            'average_rating', 'enrollment_count', 'lesson_count', 'created_at',
         )
         read_only_fields = ('id', 'created_at', 'instructor')
 
@@ -74,9 +75,13 @@ class CourseListSerializer(serializers.ModelSerializer):
 
 class CourseDetailSerializer(CourseListSerializer):
     modules = ModuleSerializer(many=True, read_only=True)
+    lesson_count = serializers.SerializerMethodField()
 
     class Meta(CourseListSerializer.Meta):
-        fields = CourseListSerializer.Meta.fields + ('modules', 'updated_at')
+        fields = CourseListSerializer.Meta.fields + ('modules', 'lesson_count', 'updated_at')
+
+    def get_lesson_count(self, obj):
+        return sum(module.lessons.count() for module in obj.modules.all())
 
 
 class EnrollmentSerializer(serializers.ModelSerializer):

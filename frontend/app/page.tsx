@@ -57,7 +57,7 @@ function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addT
           </span>
           <div className="flex items-center gap-2 w-full mb-2">
             <BooksIcon color="white" />
-            <p className="text-md text-white mt-1 w-1/2">{course.lessons_count} lessons</p>
+            <p className="text-md text-white mt-1 w-1/2">{course.lesson_count} lessons</p>
             <div className="flex items-center text-[#e5e5e5] mt-1 gap-2">|</div>
             <UserIcon color="white" />
             <p className="text-md text-white mt-1 w-1/2">{course.enrollment_count} students</p>

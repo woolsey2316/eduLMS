@@ -45,6 +45,10 @@ class Course(models.Model):
     def enrollment_count(self):
         return self.enrollments.count()
 
+    @property
+    def lesson_count(self):
+        return sum(module.lessons.count() for module in self.modules.all())
+
 
 class Module(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='modules')

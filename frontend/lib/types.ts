@@ -23,7 +23,7 @@ export interface Course {
   instructor_name: string;
   average_rating: number | null;
   enrollment_count: number;
-  lessons_count: number;
+  lesson_count: number;
   created_at: string;
   modules?: Module[];
   updated_at?: string;
