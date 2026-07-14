@@ -3,38 +3,92 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import api from '@/lib/api';
-import type { Course } from '@/lib/types';
+import type { Cart, Course } from '@/lib/types';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import AddToCartButton from '@/components/AddToCartButton';
 
 function StarRating({ rating }: { rating: number | null }) {
-  if (!rating) return <span className="text-gray-400 text-sm">No ratings yet</span>;
+  if (!rating) return <span className="text-gray-400 text-2xl">No ratings yet</span>;
   return (
-    <span className="text-yellow-500 text-sm font-medium">
+    <span className="text-[#f8b81f] text-2xl font-medium">
       {'★'.repeat(Math.round(rating))}{'☆'.repeat(5 - Math.round(rating))} {rating.toFixed(1)}
     </span>
   );
 }
 
-function CourseCard({ course }: { course: Course }) {
+function BooksIcon({ color }: { color: string }) {
   return (
-    <Link href={`/courses/${course.id}`} className="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+    <svg fill={color} width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <title>books</title>
+      <path d="M30.156 26.492l-6.211-23.184c-0.327-1.183-1.393-2.037-2.659-2.037-0.252 0-0.495 0.034-0.727 0.097l0.019-0.004-2.897 0.776c-0.325 0.094-0.609 0.236-0.86 0.42l0.008-0.005c-0.49-0.787-1.349-1.303-2.33-1.306h-2.998c-0.789 0.001-1.5 0.337-1.998 0.873l-0.002 0.002c-0.5-0.537-1.211-0.873-2-0.874h-3c-1.518 0.002-2.748 1.232-2.75 2.75v24c0.002 1.518 1.232 2.748 2.75 2.75h3c0.789-0.002 1.5-0.337 1.998-0.873l0.002-0.002c0.5 0.538 1.211 0.873 2 0.875h2.998c1.518-0.002 2.748-1.232 2.75-2.75v-16.848l4.699 17.54c0.327 1.182 1.392 2.035 2.656 2.037h0c0.001 0 0.003 0 0.005 0 0.251 0 0.494-0.034 0.725-0.098l-0.019 0.005 2.898-0.775c1.182-0.326 2.036-1.392 2.036-2.657 0-0.252-0.034-0.497-0.098-0.729l0.005 0.019zM18.415 9.708l5.31-1.423 3.753 14.007-5.311 1.422zM18.068 3.59l2.896-0.776c0.097-0.027 0.209-0.043 0.325-0.043 0.575 0 1.059 0.389 1.204 0.918l0.002 0.009 0.841 3.139-5.311 1.423-0.778-2.905v-1.055c0.153-0.347 0.449-0.607 0.812-0.708l0.009-0.002zM11.5 2.75h2.998c0.69 0.001 1.249 0.56 1.25 1.25v3.249l-5.498 0.001v-3.25c0.001-0.69 0.56-1.249 1.25-1.25h0zM8.75 23.25h-5.5v-14.5l5.5-0.001zM10.25 8.75l5.498-0.001v14.501h-5.498zM4.5 2.75h3c0.69 0.001 1.249 0.56 1.25 1.25v3.249l-5.5 0.001v-3.25c0.001-0.69 0.56-1.249 1.25-1.25h0zM7.5 29.25h-3c-0.69-0.001-1.249-0.56-1.25-1.25v-3.25h5.5v3.25c-0.001 0.69-0.56 1.249-1.25 1.25h-0zM14.498 29.25h-2.998c-0.69-0.001-1.249-0.56-1.25-1.25v-3.25h5.498v3.25c-0.001 0.69-0.56 1.249-1.25 1.25h-0zM28.58 27.826c-0.164 0.285-0.43 0.495-0.747 0.582l-0.009 0.002-2.898 0.775c-0.096 0.026-0.206 0.041-0.319 0.041-0.575 0-1.060-0.387-1.208-0.915l-0.002-0.009-0.841-3.14 5.311-1.422 0.841 3.14c0.027 0.096 0.042 0.207 0.042 0.321 0 0.23-0.063 0.446-0.173 0.63l0.003-0.006z"></path>
+    </svg>
+  )
+}
+
+function UserIcon({ color }: { color: string }) {
+  return (
+    <svg width="20px" height="15px" viewBox="0 0 24 24" fill="none" stroke={color} xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+}
+
+function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addToCart: (course: Course) => void, isAddedToCart: boolean }) {
+  
+  return (
+    <Link href={`/courses/${course.id}`} className="group block relative bg-white rounded-sm font-spartan shadow-[0px_10px_50px_0px_rgba(26,46,85,0.1)] transition overflow-hidden">
+      <div className="invisible group-hover:visible absolute top-0 left-0 w-full h-full bg-[#1ab69d]">
+        <div className="flex flex-col items-start justify-center h-full p-6">
+          <p className="mb-4 font-medium mt-2 bg-[#ffffff] p-1 px-2 rounded-sm text-[#181818] text-[14px] font-medium uppercase tracking-wider">
+            {course.category}
+          </p>
+          <p className="text-white text-2xl font-medium leading-[1.1]">
+            {course.title}
+          </p>
+          <p className="text-white text-lg mt-2 h-28 line-clamp-2">
+            {course.description}
+          </p>
+          <div className="flex items-center justify-between mt-1">
+            <StarRating rating={course.average_rating} />
+          </div>
+          <span className="font-medium text-white text-xl mt-2 mb-2">
+            {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
+          </span>
+          <div className="flex items-center gap-2 w-full mb-2">
+            <BooksIcon color="white" />
+            <p className="text-md text-white mt-1 w-1/2">{course.lessons_count} lessons</p>
+            <div className="flex items-center text-[#e5e5e5] mt-1 gap-2">|</div>
+            <UserIcon color="white" />
+            <p className="text-md text-white mt-1 w-1/2">{course.enrollment_count} students</p>
+          </div>
+          <AddToCartButton addToCart={() => addToCart(course)} isAdded={isAddedToCart} />
+        </div>
+      </div>
       {course.thumbnail_url ? (
         <img src={course.thumbnail_url} alt={course.title} className="w-full h-40 object-cover" />
       ) : (
         <div className="w-full h-40 bg-indigo-100 flex items-center justify-center text-indigo-300 text-4xl">📚</div>
       )}
-      <div className="p-4">
+      <div className="p-6 px-8 flex flex-col items-start">
         {course.category && (
-          <span className="text-xs text-indigo-600 font-semibold uppercase tracking-wider">{course.category}</span>
+          <span className="text-xs text-[#1ab69d] bg-[rgba(26,182,157,.15)] p-1 px-2 rounded-sm text-[14px] font-medium uppercase tracking-wider">{course.category}</span>
         )}
-        <h3 className="font-semibold text-gray-900 mt-1 group-hover:text-indigo-700 line-clamp-2">{course.title}</h3>
+        <h3 className="font-medium text-[22px] text-[#181818] mt-3 mb-2 line-clamp-2 leading-[1.1]">{course.title}</h3>
         <p className="text-sm text-gray-500 mt-1">by {course.instructor_name}</p>
-        <div className="flex items-center justify-between mt-3">
+        <div className="flex items-center justify-between mt-1">
           <StarRating rating={course.average_rating} />
-          <span className="font-bold text-indigo-700">
-            {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
-          </span>
         </div>
-        <p className="text-xs text-gray-400 mt-1">{course.enrollment_count} students</p>
+        <span className="font-medium text-[#ee4a62] text-xl mt-2 mb-2">
+          {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
+        </span>
+        <div className="flex items-center gap-2 mt-auto w-full">
+          <BooksIcon color="#181818" />
+          <p className="text-md text-[#181818] mt-1 w-1/2">{course.lesson_count} lessons</p>
+          <div className="flex items-center text-[#e5e5e5] mt-1 gap-2">|</div>
+          <UserIcon color="#181818" />
+          <p className="text-md text-[#181818] mt-1 w-1/2">{course.enrollment_count} students</p>
+        </div>
       </div>
     </Link>
   );
@@ -93,8 +147,11 @@ function GroupIcon() {
 export default function HomePage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [numberOfMembers, setNumberOfMembers] = useState(0);
+  const [cart, setCart] = useState<Cart | []>([])
   const [loading, setLoading] = useState(true);
-
+  const [cartMsg, setCartMsg] = useState('');
+  const { user } = useAuth();
+  const router = useRouter();
   // Parallax state — normalised offset from hero centre (-1 … 1)
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLElement>(null);
@@ -124,8 +181,25 @@ export default function HomePage() {
       setCourses(coursesResponse.data.results ?? coursesResponse.data);
       setNumberOfMembers(usersResponse.data.count);
       setLoading(false)
-    }).catch(() => setLoading(false));
+    }).catch(() => {
+      setCart([])
+      setLoading(false)
+    });
+    api.get('/cart').then(cartResponse => {
+      setCart(cartResponse.data.results ?? [])
+    })
   }, []);
+
+  const addToCart = async (course: Course) => {
+    if (!user) { router.push('/auth/login'); return; }
+    try {
+      await api.post('/cart/add/', { course_id: course.id });
+      setCartMsg('Added to cart!');
+    } catch (err: unknown) {
+      const data = (err as { response?: { data?: { detail?: string } } })?.response?.data;
+      setCartMsg(data?.detail || 'Could not add to cart.');
+    }
+  };
 
   const numberOfCourses = courses.length;
   return (
@@ -212,21 +286,21 @@ export default function HomePage() {
       
       {/* Banner */}
       <section className="bg-[linear-gradient(-90deg,#31b978,#1ab69d)] flex items-center justify-center">
-        <div className="max-w-7xl mx-auto flex items-center justify-center font-spartan text-2xl">
-          <div className="flex items-center justify-center gap-4 py-10 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
-            <div className="w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><LaptopIcon /></div>
+        <div className="max-w-7xl mx-auto flex grid grid-cols-1 md:grid-cols-2 lg:flex items-center justify-center font-spartan text-2xl">
+          <div className="flex items-center justify-start lg:justify-center gap-4 xl:gap-4 py-6 px-4 xl:py-10 xl:px-6 border-r-0 lg:border-r-[hsla(0,0%,100%,.15)] lg:border-r-solid lg:border-r-1">
+            <div className="min-w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><LaptopIcon /></div>
             <p className="text-white">{numberOfCourses} Online Courses</p>
           </div>
-          <div className="flex items-center justify-center gap-4 py-10 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
-            <div className="w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><InstructorIcon /></div>
+          <div className="flex items-center justify-start lg:justify-center gap-4 xl:gap-4 py-6 px-4 xl:py-10 xl:px-6 border-r-0 lg:border-r-[hsla(0,0%,100%,.15)] lg:border-r-solid lg:border-r-1">
+            <div className="min-w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><InstructorIcon /></div>
             <p className="text-white">Top Instructors</p>
           </div>  
-          <div className="flex items-center justify-center gap-4 py-10 px-6 border-r-[hsla(0,0%,100%,.15)] border-r-solid border-r-1">
-            <div className="w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><CertificateIcon /></div>
+          <div className="flex items-center justify-start lg:justify-center gap-4 xl:gap-4 py-6 px-4 xl:py-10 xl:px-6 border-r-0 lg:border-r-[hsla(0,0%,100%,.15)] lg:border-r-solid lg:border-r-1">
+            <div className="min-w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><CertificateIcon /></div>
             <p className="text-white">Online Certifications</p>
           </div>
-          <div className="flex items-center justify-center gap-4 py-10 px-6">
-            <div className="w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><GroupIcon /></div>
+          <div className="flex items-center justify-start lg:justify-center gap-4 xl:gap-4 py-6 px-4 xl:py-10 xl:px-6">
+            <div className="min-w-20 h-20 rounded-full bg-[hsla(0,0%,100%,.1)] flex items-center justify-center"><GroupIcon /></div>
             <p className="text-white">{numberOfMembers} Members</p>
           </div>
         </div>
@@ -240,8 +314,8 @@ export default function HomePage() {
         ) : courses.length === 0 ? (
           <div className="text-center text-gray-400 py-20">No courses published yet.</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {courses.map((c) => <CourseCard key={c.id} course={c} />)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start">
+            {courses.map((c) => <CourseCard isAddedToCart={c.id in cart} addToCart={addToCart} key={c.id} course={c} />)}
           </div>
         )}
       </section>

@@ -128,7 +128,7 @@ export default function Navbar() {
       {/* ══════════════════════════════════════════════════════════
           TOP HEADER — dark strip
           ══════════════════════════════════════════════════════════ */}
-      <div className="text-white text-xs">
+      <div className="text-white text-xs hidden lg:block">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between gap-4 text-[16px] 2xl:text-[18px] font-light">
 
           {/* Promo message */}
@@ -170,7 +170,7 @@ export default function Navbar() {
             </a>
 
             {/* Social media quilt */}
-            <div className="flex items-center gap-3 py-4 pl-6">
+            <div className="items-center gap-3 py-4 pl-6 hidden xl:flex">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
                 className="text-white/70 hover:text-[#ee4a62] transition-colors" aria-label="Facebook">
                 <FacebookIcon />
@@ -210,137 +210,135 @@ export default function Navbar() {
             <Link href="/blog" className="hover:text-[#1ab69d] transition-colors">Blog</Link>
             <Link href="/contact" className="hover:text-[#1ab69d] transition-colors">Contact Us</Link>
           </div>
+          <div className="flex justify-end ml-auto items-center gap-4">
+            {/* Search bar */}
+            <form onSubmit={handleSearch} className="hidden xl:flex items-center gap-0 rounded-[4px] border border-gray-200">
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search"
+                className=" text-[#181818] px-4 py-2 w-60 focus:outline-none transition"
+              />
+              <button
+                type="submit"
+                className="bg-white text-white px-2 py-2 h-[44px] w-[44px] transition-colors"
+              >
+                <SearchIcon />
+              </button>
+            </form>
 
-          {/* Spacer */}
-          <div className="flex-1" />
-
-          {/* Search bar */}
-          <form onSubmit={handleSearch} className="hidden md:flex items-center gap-0 rounded-[4px] border border-gray-200">
-            <input
-              type="text"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Search"
-              className=" text-[#181818] px-4 py-2 w-60 focus:outline-none transition"
-            />
-            <button
-              type="submit"
-              className="bg-white text-white px-2 py-2 h-[44px] w-[44px] transition-colors"
-            >
-              <SearchIcon />
-            </button>
-          </form>
-
-          {/* Cart icon with hover dropdown (students only) */}
-          {user?.role === 'student' && (
-            <div
-              ref={cartRef}
-              className="relative"
-              onMouseEnter={openCart}
-              onMouseLeave={closeCart}
-            >
-              <Link href="/cart" className="flex items-center text-gray-600 hover:text-[#1ab69d] transition-colors">
-                <span className="relative">
-                  <CartSvg />
-                  {itemCount > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-[#1ab69d] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none">
-                      {itemCount}
-                    </span>
-                  )}
-                </span>
-              </Link>
-
-              {/* Hover dropdown */}
-              {cartOpen && (
-                <div
-                  className="absolute right-0 top-full mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 z-50"
-                  onMouseEnter={openCart}
-                  onMouseLeave={closeCart}
-                >
-                  {/* Arrow */}
-                  <div className="absolute -top-2 right-3 w-4 h-4 bg-white border-l border-t border-gray-100 rotate-45" />
-
-                  <div className="p-4">
-                    <h3 className="text-sm font-bold text-gray-800 mb-3">
-                      Shopping Cart
-                      {itemCount > 0 && (
-                        <span className="ml-2 text-xs font-normal text-gray-400">({itemCount} item{itemCount !== 1 ? 's' : ''})</span>
-                      )}
-                    </h3>
-
-                    {!cart || cart.items.length === 0 ? (
-                      <div className="text-center py-6">
-                        <p className="text-3xl mb-2">🛒</p>
-                        <p className="text-sm text-gray-400">Your cart is empty</p>
-                        <Link href="/courses" className="mt-2 inline-block text-xs text-[#1ab69d] font-medium hover:underline">
-                          Browse courses
-                        </Link>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
-                          {cart.items.map(item => (
-                            <div key={item.id} className="flex items-center gap-3">
-                              {item.course_thumbnail ? (
-                                <img
-                                  src={item.course_thumbnail}
-                                  alt={item.course_title}
-                                  className="w-12 h-10 object-cover rounded-lg flex-shrink-0"
-                                />
-                              ) : (
-                                <div className="w-12 h-10 bg-[#1ab69d]/10 rounded-lg flex items-center justify-center text-lg flex-shrink-0">
-                                  📚
-                                </div>
-                              )}
-                              <div className="flex-1 min-w-0">
-                                <Link
-                                  href={`/courses/${item.course}`}
-                                  className="text-xs font-semibold text-gray-800 hover:text-[#1ab69d] line-clamp-1"
-                                >
-                                  {item.course_title}
-                                </Link>
-                                <p className="text-xs font-bold text-[#1ab69d] mt-0.5">
-                                  {parseFloat(item.course_price) === 0 ? 'Free' : `$${item.course_price}`}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="border-t border-gray-100 mt-3 pt-3 flex items-center justify-between">
-                          <span className="text-xs text-gray-500 font-medium">Total</span>
-                          <span className="text-sm font-extrabold text-gray-900">
-                            {parseFloat(cart.total) === 0 ? 'Free' : `$${cart.total}`}
-                          </span>
-                        </div>
-
-                        <Link
-                          href="/cart"
-                          className="mt-3 block w-full text-center bg-[#1ab69d] hover:bg-[#159b86] text-white text-xs font-semibold py-2 rounded-full transition-colors"
-                        >
-                          View Cart & Checkout
-                        </Link>
-                      </>
+            {/* Cart icon with hover dropdown (students only) */}
+            {user?.role === 'student' && (
+              <div
+                ref={cartRef}
+                className="relative"
+                onMouseEnter={openCart}
+                onMouseLeave={closeCart}
+              >
+                <Link href="/cart" className="flex items-center text-gray-600 hover:text-[#1ab69d] transition-colors">
+                  <span className="relative">
+                    <CartSvg />
+                    {itemCount > 0 && (
+                      <span className="absolute -top-1.5 -right-1.5 bg-[#1ab69d] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none">
+                        {itemCount}
+                      </span>
                     )}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+                  </span>
+                </Link>
 
-          {/* Try for free CTA */}
-          <Link
-            href="/auth/register"
-            className="group flex-shrink-0 bg-[#1ab69d] text-white text-md px-5 py-2.5 rounded-full transition-colors whitespace-nowrap relative overflow-hidden"
-          >
-            <span className="relative z-10 flex items-center">
-            Try for free
-              <svg className="inline-block ml-2 w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
-            </span>
-            <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
-          </Link>
+                {/* Hover dropdown */}
+                {cartOpen && (
+                  <div
+                    className="absolute right-0 top-full mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 z-50"
+                    onMouseEnter={openCart}
+                    onMouseLeave={closeCart}
+                  >
+                    {/* Arrow */}
+                    <div className="absolute -top-2 right-3 w-4 h-4 bg-white border-l border-t border-gray-100 rotate-45" />
+
+                    <div className="p-4">
+                      <h3 className="text-sm font-bold text-gray-800 mb-3">
+                        Shopping Cart
+                        {itemCount > 0 && (
+                          <span className="ml-2 text-xs font-normal text-gray-400">({itemCount} item{itemCount !== 1 ? 's' : ''})</span>
+                        )}
+                      </h3>
+
+                      {!cart || cart.items.length === 0 ? (
+                        <div className="text-center py-6">
+                          <p className="text-3xl mb-2">🛒</p>
+                          <p className="text-sm text-gray-400">Your cart is empty</p>
+                          <Link href="/courses" className="mt-2 inline-block text-xs text-[#1ab69d] font-medium hover:underline">
+                            Browse courses
+                          </Link>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
+                            {cart.items.map(item => (
+                              <div key={item.id} className="flex items-center gap-3">
+                                {item.course_thumbnail ? (
+                                  <img
+                                    src={item.course_thumbnail}
+                                    alt={item.course_title}
+                                    className="w-12 h-10 object-cover rounded-lg flex-shrink-0"
+                                  />
+                                ) : (
+                                  <div className="w-12 h-10 bg-[#1ab69d]/10 rounded-lg flex items-center justify-center text-lg flex-shrink-0">
+                                    📚
+                                  </div>
+                                )}
+                                <div className="flex-1 min-w-0">
+                                  <Link
+                                    href={`/courses/${item.course}`}
+                                    className="text-xs font-semibold text-gray-800 hover:text-[#1ab69d] line-clamp-1"
+                                  >
+                                    {item.course_title}
+                                  </Link>
+                                  <p className="text-xs font-bold text-[#1ab69d] mt-0.5">
+                                    {parseFloat(item.course_price) === 0 ? 'Free' : `$${item.course_price}`}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="border-t border-gray-100 mt-3 pt-3 flex items-center justify-between">
+                            <span className="text-xs text-gray-500 font-medium">Total</span>
+                            <span className="text-sm font-extrabold text-gray-900">
+                              {parseFloat(cart.total) === 0 ? 'Free' : `$${cart.total}`}
+                            </span>
+                          </div>
+
+                          <Link
+                            href="/cart"
+                            className="mt-3 block w-full text-center bg-[#1ab69d] hover:bg-[#159b86] text-white text-xs font-semibold py-2 rounded-full transition-colors"
+                          >
+                            View Cart & Checkout
+                          </Link>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Try for free CTA */}
+            <Link
+              href="/auth/register"
+              className="group flex-shrink-0 bg-[#1ab69d] text-white text-md px-5 py-2.5 rounded-[4px] transition-colors whitespace-nowrap relative overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center">
+              Try for free
+                <svg className="inline-block ml-2 w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </span>
+              <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
+            </Link>
+          </div>
         </div>
       </nav>
     </header>
