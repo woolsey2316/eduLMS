@@ -75,13 +75,9 @@ class CourseListSerializer(serializers.ModelSerializer):
 
 class CourseDetailSerializer(CourseListSerializer):
     modules = ModuleSerializer(many=True, read_only=True)
-    lesson_count = serializers.SerializerMethodField()
 
     class Meta(CourseListSerializer.Meta):
-        fields = CourseListSerializer.Meta.fields + ('modules', 'lesson_count', 'updated_at')
-
-    def get_lesson_count(self, obj):
-        return sum(module.lessons.count() for module in obj.modules.all())
+        fields = CourseListSerializer.Meta.fields + ('modules', 'updated_at')
 
 
 class EnrollmentSerializer(serializers.ModelSerializer):

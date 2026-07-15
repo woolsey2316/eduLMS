@@ -38,8 +38,9 @@ function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addT
   
   return (
     <Link href={`/courses/${course.id}`} className="group block relative bg-white rounded-sm font-spartan shadow-[0px_10px_50px_0px_rgba(26,46,85,0.1)] transition overflow-hidden">
-      <div className="invisible group-hover:visible absolute top-0 left-0 w-full h-full bg-[#1ab69d]">
-        <div className="flex flex-col items-start justify-center h-full p-6">
+      {/* overlay on hover */}
+      <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute top-0 left-0 w-full h-full bg-[#1ab69d] transition-opacity duration-300 ease-in-out">
+        <div className="flex flex-col items-start justify-start h-full p-6">
           <p className="mb-4 font-medium mt-2 bg-[#ffffff] p-1 px-2 rounded-sm text-[#181818] text-[14px] font-medium uppercase tracking-wider">
             {course.category}
           </p>
@@ -55,7 +56,7 @@ function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addT
           <span className="font-medium text-white text-xl mt-2 mb-2">
             {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
           </span>
-          <div className="flex items-center gap-2 w-full mb-2">
+          <div className="flex items-center gap-2 w-full mb-2 mt-auto">
             <BooksIcon color="white" />
             <p className="text-md text-white mt-1 w-1/2">{course.lesson_count} lessons</p>
             <div className="flex items-center text-[#e5e5e5] mt-1 gap-2">|</div>
@@ -185,6 +186,9 @@ export default function HomePage() {
       setCart([])
       setLoading(false)
     });
+    // if user is not logged in, don't get the cart
+    if (!user) return
+
     api.get('/cart').then(cartResponse => {
       setCart(cartResponse.data.results ?? [])
     })
