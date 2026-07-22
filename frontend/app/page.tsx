@@ -7,6 +7,15 @@ import type { Cart, Course } from '@/lib/types';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import AddToCartButton from '@/components/AddToCartButton';
+import TopCategories from '@/components/home/TopCategories';
+import LearnGrow from '@/components/home/LearnGrow';
+import StatsCard from '@/components/home/StatsCard';
+import Testimonials from '@/components/home/Testimonials';
+import ContactBanner from '@/components/home/ContactBanner';
+import Instructors from '@/components/home/Instructors';
+import CertificateCTA from '@/components/home/CertificateCTA';
+import Partners from '@/components/home/Partners';
+import NewsSection from '@/components/home/NewsSection';
 
 function StarRating({ rating }: { rating: number | null }) {
   if (!rating) return <span className="text-gray-400 text-2xl">No ratings yet</span>;
@@ -35,11 +44,12 @@ function UserIcon({ color }: { color: string }) {
 }
 
 function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addToCart: (course: Course) => void, isAddedToCart: boolean }) {
-  
+  const priceLabel = parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`;
+
   return (
-    <Link href={`/courses/${course.id}`} className="group block relative bg-white rounded-sm font-spartan shadow-[0px_10px_50px_0px_rgba(26,46,85,0.1)] transition overflow-hidden">
+    <Link href={`/courses/${course.id}`} className="group block relative bg-white rounded-[5px] font-spartan shadow-[0px_10px_50px_0px_rgba(26,46,85,0.1)] transition overflow-hidden hover:-translate-y-1 duration-300">
       {/* overlay on hover */}
-      <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute top-0 left-0 w-full h-full bg-[#1ab69d] transition-opacity duration-300 ease-in-out">
+      <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute top-0 left-0 w-full h-full bg-[#1ab69d] transition-opacity duration-300 ease-in-out z-10">
         <div className="flex flex-col items-start justify-start h-full p-6">
           <p className="mb-4 font-medium mt-2 bg-[#ffffff] p-1 px-2 rounded-sm text-[#181818] text-[14px] font-medium uppercase tracking-wider">
             {course.category}
@@ -54,7 +64,7 @@ function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addT
             <StarRating rating={course.average_rating} />
           </div>
           <span className="font-medium text-white text-xl mt-2 mb-2">
-            {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
+            {priceLabel}
           </span>
           <div className="flex items-center gap-2 w-full mb-2 mt-auto">
             <BooksIcon color="white" />
@@ -66,24 +76,25 @@ function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addT
           <AddToCartButton addToCart={() => addToCart(course)} isAdded={isAddedToCart} />
         </div>
       </div>
-      {course.thumbnail_url ? (
-        <img src={course.thumbnail_url} alt={course.title} className="w-full h-40 object-cover" />
-      ) : (
-        <div className="w-full h-40 bg-indigo-100 flex items-center justify-center text-indigo-300 text-4xl">📚</div>
-      )}
-      <div className="p-6 px-8 flex flex-col items-start">
+      <div className="relative">
+        {course.thumbnail_url ? (
+          <img src={course.thumbnail_url} alt={course.title} className="w-full h-44 object-cover" />
+        ) : (
+          <div className="w-full h-44 bg-[#eaf0f2] flex items-center justify-center text-[#1ab69d] text-4xl">📚</div>
+        )}
+        <span className="absolute top-3 right-3 bg-[#f8b81f] text-white text-xs font-bold uppercase px-2.5 py-1 rounded-[3px]">
+          {priceLabel}
+        </span>
+      </div>
+      <div className="p-6 px-6 flex flex-col items-start">
         {course.category && (
           <span className="text-xs text-[#1ab69d] bg-[rgba(26,182,157,.15)] p-1 px-2 rounded-sm text-[14px] font-medium uppercase tracking-wider">{course.category}</span>
         )}
         <h3 className="font-medium text-[22px] text-[#181818] mt-3 mb-2 line-clamp-2 leading-[1.1]">{course.title}</h3>
-        <p className="text-sm text-gray-500 mt-1">by {course.instructor_name}</p>
         <div className="flex items-center justify-between mt-1">
           <StarRating rating={course.average_rating} />
         </div>
-        <span className="font-medium text-[#ee4a62] text-xl mt-2 mb-2">
-          {parseFloat(course.price) === 0 ? 'Free' : `$${course.price}`}
-        </span>
-        <div className="flex items-center gap-2 mt-auto w-full">
+        <div className="flex items-center gap-2 mt-4 w-full pt-4 border-t border-gray-100">
           <BooksIcon color="#181818" />
           <p className="text-md text-[#181818] mt-1 w-1/2">{course.lesson_count} lessons</p>
           <div className="flex items-center text-[#e5e5e5] mt-1 gap-2">|</div>
@@ -148,9 +159,8 @@ function GroupIcon() {
 export default function HomePage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [numberOfMembers, setNumberOfMembers] = useState(0);
-  const [cart, setCart] = useState<Cart | []>([])
+  const [cart, setCart] = useState<Cart | null>(null)
   const [loading, setLoading] = useState(true);
-  const [cartMsg, setCartMsg] = useState('');
   const { user } = useAuth();
   const router = useRouter();
   // Parallax state — normalised offset from hero centre (-1 … 1)
@@ -183,27 +193,28 @@ export default function HomePage() {
       setNumberOfMembers(usersResponse.data.count);
       setLoading(false)
     }).catch(() => {
-      setCart([])
       setLoading(false)
     });
-    // if user is not logged in, don't get the cart
     if (!user) return
 
-    api.get('/cart').then(cartResponse => {
-      setCart(cartResponse.data.results ?? [])
-    })
-  }, []);
+    api.get('/cart/').then(cartResponse => {
+      setCart(cartResponse.data)
+    }).catch(() => setCart(null))
+  }, [user]);
 
   const addToCart = async (course: Course) => {
     if (!user) { router.push('/auth/login'); return; }
     try {
       await api.post('/cart/add/', { course_id: course.id });
-      setCartMsg('Added to cart!');
-    } catch (err: unknown) {
-      const data = (err as { response?: { data?: { detail?: string } } })?.response?.data;
-      setCartMsg(data?.detail || 'Could not add to cart.');
+      const { data } = await api.get('/cart/');
+      setCart(data);
+    } catch {
+      // keep silent on home grid
     }
   };
+
+  const isInCart = (courseId: number) =>
+    cart?.items?.some((item) => item.course === courseId) ?? false;
 
   const numberOfCourses = courses.length;
   return (
@@ -310,19 +321,62 @@ export default function HomePage() {
         </div>
       </section>
 
+      <TopCategories />
+      <LearnGrow />
+
       {/* Course grid */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Featured Courses</h2>
-        {loading ? (
-          <div className="text-center text-gray-400 py-20">Loading courses…</div>
-        ) : courses.length === 0 ? (
-          <div className="text-center text-gray-400 py-20">No courses published yet.</div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start">
-            {courses.map((c) => <CourseCard isAddedToCart={c.id in cart} addToCart={addToCart} key={c.id} course={c} />)}
+      <section className="relative bg-white py-20 font-spartan overflow-hidden">
+        <img src="/shape-13.png" alt="" className="absolute top-12 right-8 w-24 opacity-40 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#181818] mb-3">
+              Pick A Course To Get Started
+            </h2>
+            <p className="text-gray-500 text-base max-w-lg mx-auto">
+              Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore
+            </p>
           </div>
-        )}
+          {loading ? (
+            <div className="text-center text-gray-400 py-20">Loading courses…</div>
+          ) : courses.length === 0 ? (
+            <div className="text-center text-gray-400 py-20">No courses published yet.</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start">
+              {courses.slice(0, 4).map((c) => (
+                <CourseCard
+                  isAddedToCart={isInCart(c.id)}
+                  addToCart={addToCart}
+                  key={c.id}
+                  course={c}
+                />
+              ))}
+            </div>
+          )}
+          <div className="flex justify-center mt-10">
+            <Link
+              href="/courses"
+              className="group inline-flex items-center gap-2 bg-[#1ab69d] text-white font-medium px-8 py-4 rounded-[5px] relative overflow-hidden"
+            >
+              <span className="relative z-10">Explore More Courses</span>
+              <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
+            </Link>
+          </div>
+        </div>
       </section>
+
+      {/* Stats overlapping into testimonials */}
+      <div className="relative bg-white pb-0">
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[#f7f9fb]" />
+        <StatsCard />
+      </div>
+      <div className="bg-[#f7f9fb]">
+        <Testimonials />
+      </div>
+      <ContactBanner />
+      <Instructors />
+      <CertificateCTA />
+      <Partners />
+      <NewsSection />
     </div>
   );
 }

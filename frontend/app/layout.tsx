@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, League_Spartan, Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,9 +46,7 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
-          <footer className="bg-gray-800 text-gray-400 text-center py-4 text-sm">
-            © {new Date().getFullYear()} eduLMS. All rights reserved.
-          </footer>
+          <Footer />
         </AuthProvider>
       </body>
     </html>
