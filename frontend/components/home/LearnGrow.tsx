@@ -6,7 +6,7 @@ const FEATURES = [
 
 export default function LearnGrow() {
   return (
-    <section className="relative bg-[#f7f9fb] py-20 font-spartan overflow-hidden">
+    <section className="relative bg-[#fff] py-20 font-spartan overflow-hidden">
       {/* Decorative accents */}
       <span className="absolute top-16 right-[12%] w-4 h-4 rounded-full bg-[#f8b81f] opacity-80" />
       <span className="absolute top-40 right-[8%] w-2.5 h-2.5 rounded-full bg-[#ee4a62] opacity-70" />
@@ -20,7 +20,7 @@ export default function LearnGrow() {
             <img
               src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&h=560&fit=crop"
               alt="Students learning online"
-              className="w-full h-[360px] md:h-[420px] object-cover rounded-[5px] shadow-[0px_20px_60px_0px_rgba(26,46,85,0.15)]"
+              className="w-full h-[360px] md:h-[420px] object-cover rounded-[10px] shadow-[0px_20px_60px_0px_rgba(26,46,85,0.15)]"
             />
 
             {/* Floating video thumbnail */}
@@ -40,7 +40,7 @@ export default function LearnGrow() {
             </div>
 
             {/* Enrolled badge */}
-            <div className="absolute -bottom-5 left-6 md:left-10 bg-white rounded-[5px] shadow-[0px_10px_40px_0px_rgba(26,46,85,0.12)] px-4 py-3 flex items-center gap-3">
+            <div className="absolute -bottom-5 left-6 md:left-10 bg-white rounded-[25px] shadow-[0px_10px_40px_0px_rgba(26,46,85,0.12)] px-4 py-3 flex items-center gap-3">
               <div className="flex -space-x-2">
                 {[1, 2, 3].map((i) => (
                   <img
@@ -61,23 +61,19 @@ export default function LearnGrow() {
 
         {/* Right — copy */}
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#181818] leading-tight mb-5">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[#181818] leading-tight mb-5">
             Learn & Grow Your Skills From{' '}
             <span className="text-[#ee4a62]">Anywhere</span>
           </h2>
-          <p className="text-gray-500 text-base leading-relaxed mb-8 max-w-md">
+          <p className="text-[#6a7282] text-[15px] font-poppins leading-relaxed mb-8 max-w-md">
             Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
           </p>
           <ul className="space-y-4">
             {FEATURES.map((feature) => (
               <li key={feature} className="flex items-center gap-3">
-                <span className="w-6 h-6 rounded-full bg-[#1ab69d]/15 flex items-center justify-center flex-shrink-0">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1ab69d" strokeWidth="3">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                </span>
-                <span className="text-[#181818] font-semibold text-lg">{feature}</span>
+                <img src="/tick.png" alt="" className="w-6 h-6" />
+                <span className="text-[#181818] font-normal text-[19px] font-spartan">{feature}</span>
               </li>
             ))}
           </ul>
