@@ -83,7 +83,7 @@ function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addT
         ) : (
           <div className="w-full h-44 bg-[#eaf0f2] flex items-center justify-center text-[#1ab69d] text-4xl">📚</div>
         )}
-        <span className="absolute top-3 right-3 bg-[#f8b81f] text-white text-xs font-bold uppercase px-2.5 py-1 rounded-[3px]">
+        <span className="absolute top-3 right-3 bg-[#f8b81f] text-white text-md font-semibold uppercase px-2.5 py-1 rounded-[3px]">
           {priceLabel}
         </span>
       </div>
@@ -323,14 +323,14 @@ export default function HomePage() {
       <LearnGrow />
 
       {/* Course grid */}
-      <section className="relative bg-white py-20 font-spartan overflow-hidden">
+      <section className="relative bg-[#f0f4f5] py-20 font-spartan overflow-hidden">
         <img src="/shape-13.png" alt="" className="absolute top-12 right-8 w-24 opacity-40 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-[#181818] mb-3">
               Pick A Course To Get Started
             </h2>
-            <img src="/underline.png" alt="" className="w-30 mx-auto" />
+            <img src="/underline-gray-bg.png" alt="" className="w-30 mx-auto" />
           </div>
           {loading ? (
             <div className="text-center text-gray-400 py-20">Loading courses…</div>
@@ -363,13 +363,11 @@ export default function HomePage() {
       </section>
 
       {/* Stats overlapping into testimonials */}
-      <div className="relative bg-white pb-0">
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[#f7f9fb]" />
+      <div className="relative bg-white pb-0 bg-[#f0f4f5]">
+        <div className="absolute inset-x-0 top-0 h-1/2 bg-[#f0f4f5]" />
         <StatsCard />
       </div>
-      <div className="bg-[#f7f9fb]">
-        <Testimonials />
-      </div>
+      <Testimonials />
       <ContactBanner />
       <Instructors />
       <CertificateCTA />

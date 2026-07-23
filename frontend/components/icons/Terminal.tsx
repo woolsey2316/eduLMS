@@ -1,10 +1,10 @@
 export function Terminal() {
   return (
     <svg
-   width="11.024335mm"
-   height="11.255846mm"
+   width="115mm"
+   height="11mm"
    className="text-green group-hover:text-white"
-   viewBox="0 0 11.024335 11.255846"
+   viewBox="0 0 11 11"
    version="1.1"
    id="svg1"
    xmlSpace="preserve"
