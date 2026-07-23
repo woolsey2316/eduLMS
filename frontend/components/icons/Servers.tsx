@@ -1,0 +1,69 @@
+export function Servers() {
+  return (
+    <svg
+   width="11.621077mm"
+   height="10.164883mm"
+   className="text-purple group-hover:text-white"
+   viewBox="0 0 11.621077 10.164883"
+   version="1.1"
+   id="svg1"
+   xmlSpace="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlnsXlink="http://www.w3.org/1999/xlink"><defs
+     id="defs1" /><g
+     id="layer1"
+     transform="translate(-20.466152,-56.817147)"><rect
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.435, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       id="rect35"
+       width="7.9943566"
+       height="3.2778821"
+       x="22.108055"
+       y="57.034649" /><path
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.435, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       d="m 22.14527,59.144194 3.403003,0.0068 1.23146,-1.119965 3.309778,-0.03467"
+       id="path35" /><rect
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.210062, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       id="rect36"
+       width="0.11829707"
+       height="0.14617284"
+       x="27.661148"
+       y="59.017254" /><rect
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.199969, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       id="rect37"
+       width="0.14425965"
+       height="0.16603775"
+       x="28.779587"
+       y="58.999599" /><rect
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.435, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       id="rect35-7"
+       width="7.9943566"
+       height="3.2778821"
+       x="22.14385"
+       y="61.037601" /><path
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.435, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       d="m 22.181066,63.147147 3.403003,0.0068 1.23146,-1.119965 3.309778,-0.03467"
+       id="path35-3" /><rect
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.210062, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       id="rect36-6"
+       width="0.11829707"
+       height="0.14617284"
+       x="27.696943"
+       y="63.020206" /><rect
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.199969, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       id="rect37-5"
+       width="0.14425965"
+       height="0.16603775"
+       x="28.815382"
+       y="63.002552" /><rect
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.441, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       id="rect38"
+       width="6.7262053"
+       height="0.71106464"
+       x="22.621876"
+       y="60.320869" /><path
+       id="rect39"
+       style={{ fill: "none", stroke: "currentColor", strokeWidth: 0.435, strokeLinejoin: "round", strokeDasharray: "none", strokeOpacity: 1 }}
+       d="m 24.324585,65.706198 v 1.058333 h 3.175 v -0.523449 l 4.373198,-0.0271 -4.373198,0.0271 v -0.534884 c -0.839115,0.0055 -1.849067,0.01609 -1.703256,-0.0083 l 0.0083,-1.347722 -0.0083,1.35599 z m -3.857435,0.517646 3.822528,0.01754 z" /></g></svg>
+
+  )
+}

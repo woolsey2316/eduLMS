@@ -9,6 +9,17 @@
     0% { transform: translateX(-50px); }
     100% { transform: translateX(50px); }
   }
+
+  --color-pink: #f92596;
+  --color-lime: #0ecd73;
+  --color-green: #1ab69d;
+  --color-yellow: #f8b81f;
+  --color-purple: #8e56ff;
+  --color-blue: #5866eb;
+  --color-orange: #f8941f;
+  --color-teal: #39c0fa;
+  --color-red: #ee4a62;
+
 }
 
 :root {
