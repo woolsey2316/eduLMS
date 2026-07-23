@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import Logo from '@/components/Logo';
 import api from '@/lib/api';
 import type { Cart } from '@/lib/types';
+import { RightArrow } from './icons/RightArrow';
 
 /* ── Inline SVG icons ───────────────────────────────────────────────── */
 function PhoneIcon() {
@@ -331,10 +332,9 @@ export default function Navbar() {
               className="group flex-shrink-0 bg-[#1ab69d] text-white text-md px-5 py-2.5 rounded-[4px] transition-colors whitespace-nowrap relative overflow-hidden"
             >
               <span className="relative z-10 flex items-center">
-              Try for free
-                <svg className="inline-block ml-2 w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
+                Try for free
+                <span className="ml-2"/>
+                <RightArrow/>
               </span>
               <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
             </Link>

@@ -16,6 +16,7 @@ import Instructors from '@/components/home/Instructors';
 import CertificateCTA from '@/components/home/CertificateCTA';
 import Partners from '@/components/home/Partners';
 import NewsSection from '@/components/home/NewsSection';
+import { RightArrow } from '@/components/icons/RightArrow';
 
 function StarRating({ rating }: { rating: number | null }) {
   if (!rating) return <span className="text-gray-400 text-2xl">No ratings yet</span>;
@@ -57,7 +58,7 @@ function CourseCard({ course, addToCart, isAddedToCart }: { course: Course, addT
           <p className="text-white text-2xl font-medium leading-[1.1]">
             {course.title}
           </p>
-          <p className="text-white text-lg mt-2 h-28 line-clamp-2">
+          <p className="text-white text-lg mt-2 h-22 line-clamp-2">
             {course.description}
           </p>
           <div className="flex items-center justify-between mt-1">
@@ -245,10 +246,7 @@ export default function HomePage() {
             >
               <span className="relative z-10 flex items-center gap-3">
                 Find Courses
-                {/* Arrow Right */}
-                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
+                <RightArrow/>
               </span>
               {/* Gradient slide-in overlay */}
               <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
@@ -329,12 +327,10 @@ export default function HomePage() {
         <img src="/shape-13.png" alt="" className="absolute top-12 right-8 w-24 opacity-40 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#181818] mb-3">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#181818] mb-3">
               Pick A Course To Get Started
             </h2>
-            <p className="text-gray-500 text-base max-w-lg mx-auto">
-              Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore
-            </p>
+            <img src="/underline.png" alt="" className="w-30 mx-auto" />
           </div>
           {loading ? (
             <div className="text-center text-gray-400 py-20">Loading courses…</div>
@@ -355,9 +351,11 @@ export default function HomePage() {
           <div className="flex justify-center mt-10">
             <Link
               href="/courses"
-              className="group inline-flex items-center gap-2 bg-[#1ab69d] text-white font-medium px-8 py-4 rounded-[5px] relative overflow-hidden"
+              className="group inline-flex items-center gap-2 bg-[#1ab69d] text-[18px] font-spartan text-white font-medium px-8 py-4 rounded-[5px] relative overflow-hidden"
             >
-              <span className="relative z-10">Explore More Courses</span>
+              <span className="relative z-10 flex items-center gap-2">Explore More Courses
+                <RightArrow/>
+              </span>
               <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
             </Link>
           </div>
