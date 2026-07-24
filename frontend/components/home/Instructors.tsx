@@ -53,19 +53,19 @@ export default function Instructors() {
                       <Share className="w-5 h-5" />
                     </a>
                   </li>
-                  <li className="group/circle cursor-pointerflex items-center justify-center border border-[#ffffff] border-[2px] rounded-full p-2 opacity-0 group-hover:opacity-100 hover:bg-white transition-opacity transition-translate duration-300 delay-200 duration-300 ease-in-out -translate-y-2 group-hover:translate-y-0">
+                  <li className="group/circle cursor-pointer flex items-center justify-center border-2 border-white rounded-full p-2 opacity-0 -translate-y-2 transition-[opacity,transform] duration-300 ease-in-out delay-200 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-white">
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
                       className="text-white/70 hover:text-[#ee4a62] transition-colors" aria-label="Facebook">
                       <FacebookSecondaryIcon className="w-5 h-5 text-white group-hover/circle:text-[#1ab69d]" />
                     </a>
                   </li>
-                  <li className="group/circle cursor-pointer flex items-center justify-center border border-[#ffffff] border-[2px] rounded-full p-2 opacity-0 group-hover:opacity-100 hover:bg-white transition-opacity transition-translate duration-300 delay-300 duration-300 ease-in-out -translate-y-2 group-hover:translate-y-0">
+                  <li className="group/circle cursor-pointer flex items-center justify-center border-2 border-white rounded-full p-2 opacity-0 -translate-y-2 transition-[opacity,transform] duration-300 ease-in-out delay-300 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-white">
                     <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
                       className="text-white/70 hover:text-[#ee4a62] transition-colors" aria-label="Twitter">
                       <TwitterIcon className="w-5 h-5 text-white group-hover/circle:text-[#1ab69d]" />
                     </a>
                   </li>
-                  <li className="group/circle cursor-pointer flex items-center justify-center border border-[#ffffff] border-[2px] rounded-full p-2 py-2.5 opacity-0 group-hover:opacity-100 hover:bg-white transition-opacity transition-translate duration-300 delay-400 duration-300 ease-in-out -translate-y-2 group-hover:translate-y-0">
+                  <li className="group/circle cursor-pointer flex items-center justify-center border-2 border-white rounded-full p-2 py-2.5 opacity-0 -translate-y-2 transition-[opacity,transform] duration-300 ease-in-out delay-400 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-white">
                     <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
                       className="text-white/70 hover:text-[#ee4a62] transition-colors" aria-label="LinkedIn">
                       <LinkedInSecondaryIcon className="w-4 h-4 text-white group-hover/circle:text-[#1ab69d]" />

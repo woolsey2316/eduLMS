@@ -1,9 +1,11 @@
-export const RightArrow = () => {
+import { cn } from "@/lib/utils"
+
+export const RightArrow = ({ className }: { className?: string }) => {
   return (
     <svg
    width="4.0439916mm"
    height="2.8024614mm"
-   className="text-white"
+   className={cn("text-white", className)}
    viewBox="0 0 4.0439916 2.8024614"
    version="1.1"
    id="svg1"

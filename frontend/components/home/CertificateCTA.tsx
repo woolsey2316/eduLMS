@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { RightArrow } from '../icons/RightArrow';
 
 export default function CertificateCTA() {
   return (
@@ -14,7 +15,7 @@ export default function CertificateCTA() {
       <img src="/shape-18.png" alt="" className="absolute bottom-8 right-[18%] w-16 opacity-40 pointer-events-none" />
 
       <div className="max-w-3xl mx-auto px-4 text-center relative z-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#181818] leading-tight mb-8">
+        <h2 className="text-4xl md:text-5xl font-semibold text-[#181818] leading-tight mb-8">
           Get Your Quality Skills{' '}
           <span className="text-[#ee4a62]">Certificate</span> Through EduLMS
         </h2>
@@ -22,7 +23,9 @@ export default function CertificateCTA() {
           href="/courses"
           className="group inline-flex items-center gap-2 bg-[#1ab69d] text-white font-medium px-8 py-4 rounded-[5px] relative overflow-hidden"
         >
-          <span className="relative z-10">Get Started Now</span>
+          <span className="relative z-10 flex items-center gap-2 text-lg font-normal">Get Started Now
+            <RightArrow className="mb-1" />
+          </span>
           <span className="absolute inset-0 bg-[linear-gradient(-90deg,#31b978,#1ab69d)] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out" />
         </Link>
       </div>

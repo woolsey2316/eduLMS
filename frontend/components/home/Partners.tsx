@@ -16,27 +16,23 @@ export default function Partners() {
 
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
         <div className="lg:col-span-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#181818] leading-tight mb-4">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[#181818] leading-tight">
             Learn with Our Partners
           </h2>
-          <p className="text-gray-500 text-base leading-relaxed">
+          <img src="/underline.png" alt="Partners" className="w-30 h-full object-cover" />
+          <p className="text-[#808080] text-lg leading-relaxed">
             Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua.
           </p>
         </div>
 
-        <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {PARTNERS.map((partner) => (
+        <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4">
+          {PARTNERS.map((partner, index) => (
             <div
               key={partner.name}
-              className="h-20 rounded-[5px] border border-gray-100 bg-white shadow-[0px_6px_24px_0px_rgba(26,46,85,0.06)] flex items-center justify-center hover:shadow-[0px_10px_30px_0px_rgba(26,46,85,0.1)] transition-shadow"
+              className="bg-white shadow-[0px_6px_24px_0px_rgba(26,46,85,0.06)] flex items-center justify-center hover:shadow-[0px_10px_30px_0px_rgba(26,46,85,0.1)] transition-shadow"
             >
-              <span
-                className="text-lg font-bold tracking-tight"
-                style={{ color: partner.color }}
-              >
-                {partner.name}
-              </span>
+              <img src={`/brand-0${index + 1}.png`} alt={partner.name} className="w-[120px] h-[120px] object-cover" />
             </div>
           ))}
         </div>
