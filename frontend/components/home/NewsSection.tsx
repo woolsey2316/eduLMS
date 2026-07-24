@@ -13,30 +13,30 @@ function NewsCard({ post }: { post: BlogPost }) {
   });
 
   return (
-    <article className="group bg-white rounded-[5px] shadow-[0px_10px_40px_0px_rgba(26,46,85,0.08)] overflow-hidden flex flex-col">
-      <Link href={`/blog/${post.id}`} className="block overflow-hidden relative">
+    <article className="group bg-[#fff] overflow-visible flex flex-col">
+      <Link href={`/blog/${post.id}`} className="block overflow-hidden relative rounded-xl">
         {post.thumbnail_url ? (
           <img
             src={post.thumbnail_url}
             alt={post.title}
-            className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-52 bg-gradient-to-br from-[#1f2432] to-[#1ab69d]" />
+          <div className="w-full h-64 bg-gradient-to-br from-[#1f2432] to-[#1ab69d]" />
         )}
         <span className="absolute top-4 left-4 bg-[#1ab69d] text-white text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-[3px]">
           {post.category || 'News'}
         </span>
       </Link>
 
-      <div className="p-6 flex flex-col flex-1">
-        <p className="text-sm text-gray-400 mb-2">{date}</p>
+      <div className="relative p-6 bg-white flex flex-col flex-1 mt-[-175px] z-1 mx-6 rounded-xl shadow-[0px_10px_40px_0px_rgba(26,46,85,0.08)]">
+        <p className="text-sm text-[#808080] mb-2">{date}</p>
         <Link href={`/blog/${post.id}`}>
-          <h3 className="text-xl font-bold text-[#181818] leading-snug mb-3 group-hover:text-[#1ab69d] transition-colors line-clamp-2">
+          <h3 className="text-xl font-semibold text-[#181818] leading-snug mb-3 group-hover:text-[#1ab69d] transition-colors line-clamp-2">
             {post.title}
           </h3>
         </Link>
-        <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-5 flex-1">
+        <p className="text-[#808080] text-lg leading-relaxed line-clamp-2 mb-5 flex-1">
           {post.excerpt}
         </p>
         <Link
@@ -129,13 +129,14 @@ export default function NewsSection() {
   const display = posts.length > 0 ? posts.slice(0, 3) : FALLBACK_POSTS;
 
   return (
-    <section className="relative bg-[#f7f9fb] py-20 font-spartan overflow-hidden">
+    <section className="relative bg-white py-20 font-spartan overflow-hidden">
       <img src="/shape-13.png" alt="" className="absolute top-12 left-8 w-24 opacity-40 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#181818] mb-3">Get News with EduLMS</h2>
-          <p className="text-gray-500 text-base max-w-lg mx-auto">
+          <h2 className="text-4xl md:text-5xl font-semibold text-[#181818] mb-3">Get News with EduLMS</h2>
+          <img src="/underline.png" alt="News" className="w-30 mx-auto h-full object-cover" />
+          <p className="text-[#808080] text-lg max-w-lg mx-auto">
             Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore
           </p>
         </div>
